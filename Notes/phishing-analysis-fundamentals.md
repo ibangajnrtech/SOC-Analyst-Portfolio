@@ -71,5 +71,5 @@ Different types of malicious emails can be classified as one of the following:
 
 ## Safe Analysis
 
-When dealing with hyperlinks and attachments, be careful not to click them accidentally. [Hyperlinks](https://static-labs.tryhackme.cloud/sites/eviction/) and [IP-Addresses](https://static-labs.tryhackme.cloud/sites/eviction/) should be defanged.
+When dealing with hyperlinks and attachments, be careful not to click them accidentally. [Hyperlinks](https://gchq.github.io/CyberChef/#recipe=Defang_URL(true,true,true,'Valid%20domains%20and%20full%20URLs')) and [IP-Addresses](https://gchq.github.io/CyberChef/#recipe=Defang_IP_Addresses()) should be defanged.
 Defanging makes URLS, domains, or email addresses unclickable to prevent accidental clicks that could lead to a security breach. It works by replacing special characters such as *@* in an email or *.* in a URL, with alternate characters:
