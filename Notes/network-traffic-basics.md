@@ -51,27 +51,27 @@ A network traffic flow is typically determined by the services available in the 
 1) **North-South Traffic**: NS traffic is often monitored closely as it flows from the LAN to the WAN and vice versa. The most well-known services in this category are client-server protocols like HTTPS, DNS, SSH, VPN, SMTP, RDP, and many more. Each of these protocols has two streams: ingress (inbound) and egress (outbound). All of this traffic passes the firewall in one way or another. Configuring firewall rules and logging properly are key to visibility.
 
 2) **East-West Traffic**: EW traffic stays within the corporate LAN, so it is often monitored less. However, it is important to keep track of these flows. When the network is compromised, an attacker will often exploit different services internally to move laterally within the network. There are many services within this category namely:
-    **Directory, Authentication & Identity Services**
-        Kerberos / LDAP: Authentication/queries to Active Directory
-        RADIUS / TACACS+: Network access control
-        Certificate Authority issuing internal certifications
-    **File shares & print services**
-        SMB/CIFS: Accessing network drives
-        IPP/LPD: Printing over the network
-    **Router, switching, and infrastructure services**
-        DHCP traffic between hosts and the DHCP server
-        ARP broadcast messages
-        Internal DNS
-        Routing protocol messages
-    **Application Communication**
-        Database Connections: SQL over TCP
-        Microservices APIs: REST or gRPC calls between services
-    **Backup & Replication**
-        File Replication: Between data centers or to backup servers
-        Database Replication: MySQL binlog replication, PostgreSQL streaming, and more
-    **Monitoring & Management**
-        SNMP: Device health metrics
-        Syslog: Centralized logging
-        NetFlow/IPFIX: Traffic flow telemetry
-        Other endpoint logs sent to a central logging server
+- **Directory, Authentication & Identity Services**
+    - Kerberos / LDAP: Authentication/queries to Active Directory
+    - RADIUS / TACACS+: Network access control
+    - Certificate Authority issuing internal certifications
+- **File shares & print services**
+    - SMB/CIFS: Accessing network drives
+    - IPP/LPD: Printing over the network
+- **Router, switching, and infrastructure services**
+    - DHCP traffic between hosts and the DHCP server
+    - ARP broadcast messages
+    - Internal DNS
+    - Routing protocol messages
+- **Application Communication**
+    - Database Connections: SQL over TCP
+    - Microservices APIs: REST or gRPC calls between services
+- **Backup & Replication**
+    - File Replication: Between data centers or to backup servers
+    - Database Replication: MySQL binlog replication, PostgreSQL streaming, and more
+- **Monitoring & Management**
+    - SNMP: Device health metrics
+    - Syslog: Centralized logging
+    - NetFlow/IPFIX: Traffic flow telemetry
+    - Other endpoint logs sent to a central logging server
 
