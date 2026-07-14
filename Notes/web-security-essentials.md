@@ -280,3 +280,102 @@ Hunting for repeated or unusual requests can be useful
 Can be helpful in finding suspicious or modified files
 - `http.user_agent`
 Used to locate unusual or outdated User-Agents
+
+# Detecting Web DDOS - DDOD and DDOS attacks
+
+Denial-of-Service (DoS) attacks can take many forms, but their ultimate aim is to disrupt or completely block access to a website or web service. At their core, Denial-of-Service (DoS) attacks are meant to overwhelm a website or app so that people can’t use it. When this happens, customers can’t log in, shop, or access services, and businesses lose money and trust.
+
+## Distributed Denial-Of-Service (DDOS)
+
+The limitation of a basic DoS attack is that it relies on a single machine and a single internet connection. While one computer can generate many requests, its impact is capped by its CPU, memory, bandwidth, and network.
+To scale up, attackers turn to Distributed Denial-of-Service (DDoS) attacks and utilize botnets, an army of compromised devices under their control. The computers, IoT devices, and even servers are often infected with malware and secretly controlled by the attacker. When instructed, the bots flood the target website or web application with traffic, overwhelming it much more effectively than a single machine could.
+
+## Types of Denial-Of-Service Attacks
+
+1) **Slowloris:** Sending many partial HTTP requests to tie up server resources
+2) **HTTP Flood:** Sending a large number of HTTP requests to overwhelm the server
+3) **Cache Bypass:** Bypassing CDN edge servers and forcing the origin server to respond
+4) **Oversized Query:** Forcing the server to process large, resource-intensive requests
+5) **Login/Form Abuse:** Overloading authentication logic with login attempts or password resets
+6) **Faulty Input Validation Abuse:** Exploiting poorly designed input handling
+
+## Attack Motives
+
+1) **Financial Loss:** Disrupt services to stop or reduce sales and revenue
+**Example:** Flooding an e-commerce website during peak holiday sales
+
+2) **Extortion:** Demand payment to stop a current attack
+**Example:** Threatening a bank with a ransom DDoS
+
+3) **Hacktivism:** Disruption for social or political protest
+**Example:** Attacking government websites during election season
+
+4) **Distraction:** Redirect defenders' attention while other attacks take place
+**Example:** Launching a DDoS while attacking other infrastructure
+
+5) **Competition:** Disrupt a rival's service to drive up their costs or gain market share
+**Example:** A competitor launches a DDoS during a product launch
+
+6) **Denial of Wallet:** Force the victim to rack up service usage costs
+**Example:** Attackers repeatedly access AWS S3 data, generating costs per request
+
+7) **Reputational Damage:** Cause customers to lose trust in a company
+**Example:** Game servers crashing during launch day
+
+## Indicators of DOS and DDOS Attacks
+
+1) **High Request Rate:** A resource-heavy page like /login is flooded with requests to overwhelm authentication processes. Login pages are common targets since each request may trigger password checks and database queries
+**Example:** 10.10.10.100 → 1000 GET /login
+
+2) **Odd User-Agents:** Attackers spoof outdated or unusual User-Agents to blend in or bypass filters. Spotting traffic with tools like curl or Python-urllib/3.x, for example, can be a red flag for automated attacks
+**Example:** curl/7.6.88 → /index repeatedly
+
+3) **Geographic anomalies:** Legitimate traffic typically comes from a few regions where real users are located. A globally distributed botnet may utilize IP addresses from around the world
+**Example:** IP address origins dotted around the world
+
+4) **Burst Timestamps:** A sudden spike of requests packed into the same second creates an unnatural traffic pattern that points to automation
+**Example:** 50 requests in 1 second → /search
+
+5) **Server Errors (5xx):** A sudden surge of server error responses (500 - 511) indicates resources are maxed out and the service is struggling under attack traffic
+**Example:** A significant spike of 503 Service Unavailable errors
+
+6) **Logic Abuse:** Attackers craft queries that overload the server, forcing it to load huge amounts of information and slowing it down for everyone
+**Example:** GET /products?limit=999999
+
+## Targeted Resources
+
+Commonly targeted endpoints and reasoning: 
+
+- `/login` - involves authentication processes 
+- `/search` - requires complex database queries
+- `/api` endpoints - critical for dynamic content delivery
+- `/register` or `/signup` - requires database writes and validation
+- `/contact` or `/feedback` - requires database entries and can trigger email notifications
+- `/cart` or `/checkout` - requires session management, inventory checks, and payment processing
+
+## Defense - Application Level Defense
+
+- **Secure Development Practices**
+
+A secure site starts with secure code. Search fields and forms must validate input so they can’t be abused. Think of a search form like a librarian who looks up books on request. If the librarian has clear rules, like “only search for titles under 50 characters”, they can respond quickly. Without rules in place, someone could ask the librarian to search for an overly long or strange title with special characters, slowing them down and delaying everyone else's requests. In the same way, web applications need input validation to stop attackers from submitting specialized queries aimed at overloading the system.
+
+- **Challenges**
+
+One way to stop automated traffic is to require a challenge before granting access. This could be a CAPTCHA, where the user solves a puzzle, like clicking images or checking a box. For humans, it’s a small step, but for bots, it can block or slow down an attack.
+Websites can also use JavaScript challenges, which run quietly in the background to confirm if a visitor is a real user or automated traffic. Legitimate users usually don’t notice them, but automated tools and botnets often fail, making these challenges an effective filter against malicious traffic.
+
+## Defense - Network and Infrastructure Defenses
+
+**Content Delivery Network (CDN)**
+
+CDNs help manage server load by caching and serving content from edge servers closest to users. This reduces latency and allows the origin server to handle only a fraction of requests, while the CDN serves the majority. As a result, CDNs take on much of the burden of mitigating DDoS attacks. They also provide load-balancing to distribute traffic across servers, ensuring no single server is overloaded and rerouting requests if one becomes unavailable.
+
+**Web Application Firewall (WAF)**
+
+CDNs typically integrate WAFs in an effort to shield their customers' servers. They inspect incoming traffic and either allow, challenge, or block requests. WAFs work off of rules that integrate known attack indicators and threat intelligence. Modern WAF solutions are already very good at mitigating DoS and DDoS attacks because they know what to look out for. Custom rules can also be developed to assist in defending against targeted threats.
+
+For example, you might implement a rate-limiting firewall rule that limits requests to /login.php to five per minute. If the originating IP requests the page more than five times, it would be blocked from making future requests for a period of time or provided with a challenge to prove it is a human-made request. 
+
+## Bypassing Security Measures
+
+While CDNs, caching, and WAFs provide strong protection, attackers often attempt to bypass these defenses. One technique is appending random query parameters. Your CDN might serve a cached URL at `/products`, but if an attacker appends the query with a random string like `/products?a=abcd`, your CDN cannot serve the cached page, and the origin server is forced to respond. Similarly, changing user agents, spoofing referrer pages, or launching requests from diverse geographic regions can help attackers evade WAF filtering rules.
