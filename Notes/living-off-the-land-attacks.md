@@ -114,4 +114,3 @@ Attackers create or modify tasks to achieve persistence across reboots, to run c
 Example Alert:
 
 `index=wineventlog EventCode=4698 OR EventCode=4699 OR index=sysmon (EventCode=1 OR EventCode=4688) (CommandLine="*schtasks* /Create*" OR CommandLine="*schtasks* /Run*" OR Image="*\\taskeng.exe" OR EventCode=4698) | stats count by host, user, EventCode, TaskName, CommandLine`
-
