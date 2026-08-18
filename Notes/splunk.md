@@ -53,3 +53,11 @@ This panel contains quick links to add data to the Splunk instance, add new Splu
 ## Splunk Dashboard
 
 By default, no dashboards are displayed. You can choose from a range of dashboards readily available within your Splunk instance.
+
+# Useful checks
+
+`index=VPN_Logs | stats count`
+`index=VPN_Logs | spath | search UserName="Maleena" | stats count`
+`index=VPN_Logs | spath | search Source_ip="107.14.182.38" | stats values(UserName) as UserName count`
+`index=VPN_Logs | spath | search Source_Country!="France" | stats count`
+`index=VPN_Logs | spath | search Source_ip="107.3.206.58" | stats count`
