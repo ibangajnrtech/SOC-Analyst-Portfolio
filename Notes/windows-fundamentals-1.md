@@ -43,5 +43,5 @@ Each user profile will have the same folders; a few of them are:
 - Music
 - Pictures
 Another way to access this information, and then some, is using Local User and Group Management.
-Right-click on the Start Menu and click Run. `Type lusrmgr.msc`.
+Right-click on the Start Menu and click Run. Type `lusrmgr.msc`.
 
